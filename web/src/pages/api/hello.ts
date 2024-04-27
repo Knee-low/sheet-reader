@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { keys } from "./apiKeys/keys";
+import keys from "./apiKeys/testKeys.json";
 import { google } from "googleapis";
 
 export default function googleSheetHanlder(
@@ -8,9 +8,9 @@ export default function googleSheetHanlder(
 ) {
   try {
     const client = new google.auth.JWT(
-      keys().client_email,
+      keys.client_email,
       undefined,
-      keys().private_key,
+      keys.private_key,
       ["https://www.googleapis.com/auth/spreadsheets"]
     );
 
@@ -21,7 +21,7 @@ export default function googleSheetHanlder(
 
       const gsapi = google.sheets({ version: "v4", auth: client });
       const opt = {
-        spreadsheetId: "1Qo8Mkw8zZR9azMDIRN_avz5pfPlTM3CBTcYuyADLHLg",
+        spreadsheetId: process.env.SPREADSHEET_ID,
         range: "Sheet1!A1:Z100",
       };
 
