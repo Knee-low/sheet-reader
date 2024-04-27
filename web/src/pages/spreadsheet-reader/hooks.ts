@@ -1,3 +1,5 @@
+import * as React from "react";
+
 export type SheetDataRow = [string, number, number, number, number];
 export type RowType = {
   name: any;
