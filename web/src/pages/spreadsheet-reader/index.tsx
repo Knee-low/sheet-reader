@@ -2,6 +2,7 @@ import { Box, Typography } from "@mui/material";
 import Link from "@mui/material/Link";
 import { SheetDataRow, hooks } from "./hooks";
 import DataTable from "@/templates/DataGrid";
+import * as React from "react";
 
 export default function HomePage({ sheetData }: { sheetData: SheetDataRow[] }) {
   const rows = hooks({ sheetData });
