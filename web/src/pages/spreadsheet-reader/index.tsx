@@ -28,7 +28,7 @@ export default function HomePage({ sheetData }: { sheetData: SheetDataRow[] }) {
 }
 
 export async function getServerSideProps() {
-  const req = await fetch("http://localhost:3000/api/hello");
+  const req = await fetch(process.env.URL_FETCH || '');
   const res = await req.json();
 
   return {
