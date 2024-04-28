@@ -1,15 +1,15 @@
+import * as React from "react";
 import { Box, Typography } from "@mui/material";
 import Link from "@mui/material/Link";
-import { SheetDataRow, hooks } from "./hooks";
 import DataTable from "@/templates/DataGrid";
-import * as React from "react";
+
+export type SheetDataRow = [string, number, number, number, number];
 
 export default function HomePage({ sheetData }: { sheetData: SheetDataRow[] }) {
-  const rows = hooks({ sheetData });
   return (
     <Box sx={{ color: "black", backgroundColor: "white", height: "100vh" }}>
       <Box component="section" sx={{ p: 2 }}>
-        <DataTable rowsT={rows} />
+        <DataTable rowsT={sheetData} />
       </Box>
 
       <Box sx={{ p: 5 }}>
