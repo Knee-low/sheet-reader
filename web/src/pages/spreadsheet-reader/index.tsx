@@ -27,9 +27,14 @@ export default function HomePage({ sheetData }: { sheetData: SheetDataRow[] }) {
   );
 }
 
-export async function getServerSideProps() {
-  const req = await fetch("http://localhost:3000/api/hello");
-  const res = await req.json();
+export async function getServerSideProps({ req }: {req: any}) {
+  const host = req ? req.headers.host : '';
+  const protocol = req.headers['x-forwarded-proto'] || 'http';
+  const baseUrl = `${protocol}://${host}`;
+  const apiUrl = `${baseUrl}/api/hello`;
+
+  const ret = await fetch(apiUrl);
+  const res = await ret.json();
 
   return {
     props: {

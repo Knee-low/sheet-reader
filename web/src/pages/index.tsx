@@ -1,6 +1,5 @@
-import Image from "next/image";
 import { Inter } from "next/font/google";
-import { Box, Button, Link } from "@mui/material";
+import { Box, Link } from "@mui/material";
 
 const inter = Inter({ subsets: ["latin"] });
 
