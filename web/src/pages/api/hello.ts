@@ -1,5 +1,4 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import keys from "./apiKeys/testKeys.json";
 import { google } from "googleapis";
 
 export default function googleSheetHanlder(
@@ -8,9 +7,9 @@ export default function googleSheetHanlder(
 ) {
   try {
     const client = new google.auth.JWT(
-      keys.client_email,
+      process.env.CLIENT_EMAIL,
       undefined,
-      keys.private_key,
+      process.env.PRIVATE_KEY,
       ["https://www.googleapis.com/auth/spreadsheets"]
     );
 
