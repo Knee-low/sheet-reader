@@ -1,48 +1,72 @@
 import * as React from "react";
-import { DataGrid, GridColDef } from "@mui/x-data-grid";
+import { DataGrid, type GridColDef } from "@mui/x-data-grid";
+import Box from "@mui/material/Box";
+import type { SheetDataRow } from "@/pages/spreadsheet-reader";
 
-export default function DataTable({ rowsT }: { rowsT: any }) {
+export default function DataTable({ rowsT }: { rowsT: SheetDataRow[] }) {
   const columns: GridColDef[] = [
-    { field: "id", headerName: "ID", width: 70 },
-    { field: "firstName", headerName: "First name", width: 130 },
-    { field: "lastName", headerName: "Last name", width: 130 },
+    { field: "targets", headerName: "Targets / Actions", width: 300   },
+    { field: "commands", headerName: "Commands ", width: 300 },
     {
-      field: "age",
-      headerName: "Age",
-      type: "number",
-      width: 100,
+      field: "aliasing",
+      headerName: "Alias",
+      width: 150,
     },
     {
-      field: "fullName",
-      headerName: "Full name",
-      description: "This column has a value getter and is not sortable.",
-      sortable: false,
-      width: 160,
-      valueGetter: (value, row) =>
-        `${row.firstName || ""} ${row.lastName || ""}`,
+      field: "createAlias",
+      headerName: "Create Alias",
+      width: 300,
+    },
+    {
+      field: "useAlias",
+      headerName: "Use Alias",
+      width: 300,
+    },
+    {
+      field: "description",
+      headerName: "Description",
+      width: 500,
+      renderCell: (params) => {
+        return (
+          <Box>
+            {params.value}
+            </Box>
+        );
+       }
     },
   ];
 
   const formattedRows = rowsT
-    ?.filter((data: string | any[]) => data.length > 0)
+    ?.filter((data: SheetDataRow) => data.length > 0)
     .slice(1)
-    .map((row: any) => {
+    .map((row: SheetDataRow, index: number) => {
       return {
-        id: parseInt(row[0]),
-        lastName: row[2],
-        firstName: row[1],
-        age: parseInt(row[3]),
+        id: index,
+        targets: row[0],
+        commands: row[1],
+        aliasing: row[2],
+        createAlias: row[3],
+        useAlias: row[4],
+        description: row[5],
       };
     });
 
   return (
-    <div style={{ height: 400, width: "100%" }}>
+    <div style={{ height: '90vh', width: "100%" }}>
       <DataGrid
         rows={formattedRows}
         columns={columns}
-        initialState={{
-          pagination: {
-            paginationModel: { page: 0, pageSize: 5 },
+        hideFooter={true}
+        sx={{
+          '& .MuiDataGrid-row:nth-of-type(odd)': {
+            backgroundColor: '#f9f9f9',
+          },
+          '& .MuiDataGrid-row:nth-of-type(even)': {
+            backgroundColor: '#ffffff',
+          },
+          '& .MuiDataGrid-columnHeaders': {
+            fontWeight: 'bold',
+            fontSize: '1.5rem',
           },
         }}
       />

@@ -4,7 +4,7 @@ import { google } from "googleapis";
 
 export default function googleSheetHanlder(
   req: NextApiRequest,
-  res: NextApiResponse<any>
+  res: NextApiResponse<{ success: boolean; data?: string[][]; error?: string }>
 ) {
   try {
     const client = new google.auth.JWT(
@@ -14,9 +14,9 @@ export default function googleSheetHanlder(
       ["https://www.googleapis.com/auth/spreadsheets"]
     );
 
-    client.authorize(async function (err, tokens) {
+    client.authorize(async (err) => {
       if (err) {
-        return res.status(400).send(JSON.stringify({ error: true }));
+        return res.status(400).send({ success: false, error: err.message });
       }
 
       const gsapi = google.sheets({ version: "v4", auth: client });
@@ -25,12 +25,13 @@ export default function googleSheetHanlder(
         range: "Sheet1!A1:Z100",
       };
 
-      let data = await gsapi.spreadsheets.values.get(opt);
+      const data = await gsapi.spreadsheets.values.get(opt);
       return res
         .status(400)
-        .send(JSON.stringify({ errpr: false, data: data.data.values }));
+        .send({ success: true, data: data.data.values ?? undefined });
     });
-  } catch (e: any) {
-    return res.status(400).send(e.message);
+  } catch (e: unknown) {
+    const errorMessage = e instanceof Error ? e.message : String(e);
+    return res.status(400).send({ success: false, error: errorMessage });
   }
 }

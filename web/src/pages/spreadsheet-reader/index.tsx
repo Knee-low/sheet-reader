@@ -3,7 +3,7 @@ import { Box, Typography } from "@mui/material";
 import Link from "@mui/material/Link";
 import DataTable from "@/templates/DataGrid";
 
-export type SheetDataRow = [string, number, number, number, number];
+export type SheetDataRow = [string, string, string, string, string, string];
 
 export default function HomePage({ sheetData }: { sheetData: SheetDataRow[] }) {
   return (
@@ -12,7 +12,7 @@ export default function HomePage({ sheetData }: { sheetData: SheetDataRow[] }) {
         <DataTable rowsT={sheetData} />
       </Box>
 
-      <Box sx={{ p: 5 }}>
+      {/* <Box sx={{ p: 5 }}>
         <Typography>
           <span>SAMPLE SHEET: </span>
           <Link
@@ -22,11 +22,12 @@ export default function HomePage({ sheetData }: { sheetData: SheetDataRow[] }) {
             https://docs.google.com/spreadsheets/d/1Qo8Mkw8zZR9azMDIRN_avz5pfPlTM3CBTcYuyADLHLg/edit?usp=sharing
           </Link>
         </Typography>
-      </Box>
+      </Box> */}
     </Box>
   );
 }
 
+// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 export async function getServerSideProps({ req }: {req: any}) {
   const host = req ? req.headers.host : '';
   const protocol = req.headers['x-forwarded-proto'] || 'http';
