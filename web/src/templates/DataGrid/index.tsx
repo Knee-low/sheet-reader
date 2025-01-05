@@ -5,34 +5,44 @@ import type { SheetDataRow } from "@/pages/spreadsheet-reader";
 
 export default function DataTable({ rowsT }: { rowsT: SheetDataRow[] }) {
   const columns: GridColDef[] = [
-    { field: "targets", headerName: "Targets / Actions", width: 300   },
-    { field: "commands", headerName: "Commands ", width: 300 },
+    {
+      field: "targets",
+      headerName: "Targets / Actions",
+      width: 300,
+      headerClassName: "header",
+      renderCell: ({ value }) => {
+        return <Box sx={{ fontWeight: 'bold', fontSize: '1rem'}}>{value}</Box>;
+      },
+    },
+    {
+      field: "commands",
+      headerName: "Commands ",
+      width: 300,
+      headerClassName: "header",
+    },
     {
       field: "aliasing",
       headerName: "Alias",
       width: 150,
+      headerClassName: "header",
     },
     {
       field: "createAlias",
       headerName: "Create Alias",
       width: 300,
+      headerClassName: "header",
     },
     {
       field: "useAlias",
       headerName: "Use Alias",
       width: 300,
+      headerClassName: "header",
     },
     {
       field: "description",
       headerName: "Description",
       width: 500,
-      renderCell: (params) => {
-        return (
-          <Box>
-            {params.value}
-            </Box>
-        );
-       }
+      headerClassName: "header",
     },
   ];
 
@@ -51,22 +61,37 @@ export default function DataTable({ rowsT }: { rowsT: SheetDataRow[] }) {
       };
     });
 
+  const getRowClassName = (params: { row: { id: number } }) => {
+    return params.row.id % 2 === 0 ? "even" : "odd";
+  };
+
   return (
-    <div style={{ height: '90vh', width: "100%" }}>
+    <div style={{ height: "90vh", width: "100%" }}>
       <DataGrid
         rows={formattedRows}
         columns={columns}
         hideFooter={true}
+        getRowClassName={getRowClassName}
         sx={{
-          '& .MuiDataGrid-row:nth-of-type(odd)': {
-            backgroundColor: '#f9f9f9',
+          "& .odd": {
+            backgroundColor: "#f5f5f5",
           },
-          '& .MuiDataGrid-row:nth-of-type(even)': {
-            backgroundColor: '#ffffff',
+          "& .even": {
+            backgroundColor: "#ffffff",
           },
-          '& .MuiDataGrid-columnHeaders': {
-            fontWeight: 'bold',
-            fontSize: '1.5rem',
+          "& .MuiDataGrid-columnHeaders": {
+            fontWeight: "bold",
+            fontSize: "1.5rem",
+          },
+          "& .header": {
+            color: "white",
+            backgroundColor: "#26a69a",
+          },
+          "& .MuiDataGrid-row:hover": {
+            backgroundColor: "#ddf2f0",
+          },
+          "& .MuiDataGrid-row.Mui-selected": {
+            backgroundColor: "#ddf2f0",
           },
         }}
       />
