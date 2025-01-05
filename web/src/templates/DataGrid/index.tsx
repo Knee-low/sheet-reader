@@ -15,12 +15,19 @@ export default function DataTable({ rowsT }: { rowsT: SheetDataRow[] }) {
       headerName: "Targets / Actions",
       width: 300,
       headerClassName: "header",
-      renderCell: ({ value }) => {
+      renderCell: ({ value: cellValue }) => {
+        const cellStyles = {
+          fontWeight: "bold",
+          fontSize: "1rem",
+        };
+      
         if (searchText) {
-          const searchedTargets = value.replace('#', '')
-          return <Box sx={{ fontWeight: "bold", fontSize: "1rem" }}>{searchedTargets}</Box>;
+          const highlightedValue = cellValue.replace('#', '');
+          return <Box sx={cellStyles}>{highlightedValue}</Box>;
         }
-        return value.includes('#') ? '' : <Box sx={{ fontWeight: "bold", fontSize: "1rem" }}>{value}</Box>;
+      
+        const shouldHideValue = cellValue.includes('#');
+        return shouldHideValue ? '' : <Box sx={cellStyles}>{cellValue}</Box>;
       },
       sortable: false,
     },
