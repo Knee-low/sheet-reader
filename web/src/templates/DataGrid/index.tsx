@@ -1,9 +1,14 @@
-import * as React from "react";
 import { DataGrid, type GridColDef } from "@mui/x-data-grid";
 import Box from "@mui/material/Box";
 import type { SheetDataRow } from "@/pages/spreadsheet-reader";
+import SearchBar from "../SearchBar";
+import { useHooks } from "./hooks";
 
 export default function DataTable({ rowsT }: { rowsT: SheetDataRow[] }) {
+  const { searchBarParams, searchText, filteredRows, getRowClassName } = useHooks({
+    rowsT,
+  });
+
   const columns: GridColDef[] = [
     {
       field: "targets",
@@ -11,70 +16,56 @@ export default function DataTable({ rowsT }: { rowsT: SheetDataRow[] }) {
       width: 300,
       headerClassName: "header",
       renderCell: ({ value }) => {
-        return <Box sx={{ fontWeight: 'bold', fontSize: '1rem'}}>{value}</Box>;
+        if (searchText) {
+          const searchedTargets = value.replace('#', '')
+          return <Box sx={{ fontWeight: "bold", fontSize: "1rem" }}>{searchedTargets}</Box>;
+        }
+        return value.includes('#') ? '' : <Box sx={{ fontWeight: "bold", fontSize: "1rem" }}>{value}</Box>;
       },
-      sortable: false
+      sortable: false,
     },
     {
       field: "commands",
       headerName: "Commands ",
       width: 300,
       headerClassName: "header",
-      sortable: false
+      sortable: false,
     },
     {
       field: "aliasing",
       headerName: "Alias",
       width: 150,
       headerClassName: "header",
-      sortable: false
+      sortable: false,
     },
     {
       field: "createAlias",
       headerName: "Create Alias",
       width: 300,
       headerClassName: "header",
-      sortable: false
+      sortable: false,
     },
     {
       field: "useAlias",
       headerName: "Use Alias",
       width: 300,
       headerClassName: "header",
-      sortable: false
+      sortable: false,
     },
     {
       field: "description",
       headerName: "Description",
       width: 500,
       headerClassName: "header",
-      sortable: false
+      sortable: false,
     },
   ];
 
-  const formattedRows = rowsT
-    ?.filter((data: SheetDataRow) => data.length > 0)
-    .slice(1)
-    .map((row: SheetDataRow, index: number) => {
-      return {
-        id: index,
-        targets: row[0],
-        commands: row[1],
-        aliasing: row[2],
-        createAlias: row[3],
-        useAlias: row[4],
-        description: row[5],
-      };
-    });
-
-  const getRowClassName = (params: { row: { id: number } }) => {
-    return params.row.id % 2 === 0 ? "even" : "odd";
-  };
-
   return (
     <div style={{ height: "90vh", width: "100%" }}>
+      <SearchBar searchBarParams={searchBarParams} />
       <DataGrid
-        rows={formattedRows}
+        rows={filteredRows}
         columns={columns}
         hideFooter={true}
         getRowClassName={getRowClassName}
