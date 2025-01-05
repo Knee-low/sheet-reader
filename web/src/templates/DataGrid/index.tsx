@@ -13,36 +13,42 @@ export default function DataTable({ rowsT }: { rowsT: SheetDataRow[] }) {
       renderCell: ({ value }) => {
         return <Box sx={{ fontWeight: 'bold', fontSize: '1rem'}}>{value}</Box>;
       },
+      sortable: false
     },
     {
       field: "commands",
       headerName: "Commands ",
       width: 300,
       headerClassName: "header",
+      sortable: false
     },
     {
       field: "aliasing",
       headerName: "Alias",
       width: 150,
       headerClassName: "header",
+      sortable: false
     },
     {
       field: "createAlias",
       headerName: "Create Alias",
       width: 300,
       headerClassName: "header",
+      sortable: false
     },
     {
       field: "useAlias",
       headerName: "Use Alias",
       width: 300,
       headerClassName: "header",
+      sortable: false
     },
     {
       field: "description",
       headerName: "Description",
       width: 500,
       headerClassName: "header",
+      sortable: false
     },
   ];
 
